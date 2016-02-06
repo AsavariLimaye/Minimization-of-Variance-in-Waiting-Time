@@ -79,6 +79,17 @@ class MinimizeTime
 			Random rand = new Random();
 			Time t = new Time();
 			int i;
+
+			
+			//Making the seven queues which store user processes.
+			ArrayList<ArrayList<Process>> queues = new ArrayList<ArrayList<Process>>(7);
+			for (i=0;i<7;i++)
+			{
+				queues.add(new ArrayList<Process>());	
+			}
+
+
+			//Make the processes.
 			ArrayList<Process> process_list = new ArrayList<Process>(100);
 			Process p;
 			for (i=0;i<100;i++)
@@ -87,20 +98,21 @@ class MinimizeTime
 					process_list.add(p);
 				}
 
-
-
-		
 			Collections.sort(process_list,new BurstTimeComparator());
-				
-			for (i=1;i<10;i++)
+			
+
+			//Variable to temporarily store the queues
+			for (i=0;i<10;i++)
+				queues.get(1).add((Process)process_list.remove(i));
+
+			System.out.println("Size of process queue: "+ process_list.size());
+			
+			while (queues.get(1).isEmpty()!=true)
 				{
-					p =(Process) process_list.get(i);
+					p=queues.get(1).remove(0);
 					p.Execute(t);
+					System.out.println("BurstTime: "+p.getBurstTime()+"\nCurrent Time: " + t.getNow()+ "\nWaiting time: "+ p.getWaitingTime(t));
 				}
-			for (i=0;i<100;i++)
-			{	
-				p = (Process) process_list.get(i);
-				System.out.println(i+":"+ p.getBurstTime());
-			}
+			
 		}
 }
