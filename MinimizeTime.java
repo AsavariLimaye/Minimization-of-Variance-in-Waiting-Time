@@ -1,3 +1,4 @@
+import java.util.*;
 class Time
 	{
 		private int Now;
@@ -62,22 +63,24 @@ class MinimizeTime
 		{
 			Time t = new Time();
 			int i;
-			t.IncreaseTime(200);
-			Process p = new Process(80,10);
-			Process p2 = new Process();
-			p.Execute(t);
-			/*Process []process_list;
+			ArrayList<Process> process_list = new ArrayList<Process>(100);
+			Process p;
 			for (i=0;i<100;i++)
 				{
-					process_list[i] = new Process(0,i);
+					p = new Process(0,i);
+					process_list.add(p);
 				}
 			for (i=10;i<50;i++)
-				process_list[i].Execute(t);
-			*/
-			System.out.println(t.getNow() + "\n" +p.getWaitingTime(t));
-			System.out.println(p2.getWaitingTime(t)+ "\n" + t.getNow());
-			p2.Execute(t);
-			System.out.println(p2.getWaitingTime(t)+ "\n" + t.getNow());
-			
+				{
+					System.out.println("Process "+i+" started executing at "+ t.getNow());
+					p =(Process) process_list.get(i);
+					p.Execute(t);
+					System.out.println("Process "+i+" finished executing at "+ t.getNow());
+				}
+			for (i=0;i<100;i++)
+			{	
+				p = (Process) process_list.get(i);
+				System.out.println(i+":"+ p.getWaitingTime(t));
+			}
 		}
 }
