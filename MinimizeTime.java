@@ -62,8 +62,9 @@ class MinimizeTime
 		{
 			Time t = new Time();
 			int i;
-			t.IncreaseTime(243);
-			Process p = new Process(0,56);
+			t.IncreaseTime(200);
+			Process p = new Process(80,10);
+			Process p2 = new Process();
 			p.Execute(t);
 			/*Process []process_list;
 			for (i=0;i<100;i++)
@@ -74,5 +75,9 @@ class MinimizeTime
 				process_list[i].Execute(t);
 			*/
 			System.out.println(t.getNow() + "\n" +p.getWaitingTime(t));
+			System.out.println(p2.getWaitingTime(t)+ "\n" + t.getNow());
+			p2.Execute(t);
+			System.out.println(p2.getWaitingTime(t)+ "\n" + t.getNow());
+			
 		}
 }
