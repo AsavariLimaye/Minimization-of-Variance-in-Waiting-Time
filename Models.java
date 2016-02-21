@@ -81,57 +81,65 @@ class Models
 
 	public static void  execute_VModel(ArrayList<Process> process_list, Time t)
 		{
-			/*int i,j;
-			ArrayList<Process> new_process_list = new ArrayList<Process>(process_list.size());
+		int i,j;
+		Collections.sort(process_list,new BurstTimeComparator2());
+		ArrayList<Process> new_process_list = new ArrayList<Process>(process_list.size());
 
-                        //Maintaining 7 user queues(0-6) for user processes where queue number 0 has the highest priority
-			ArrayList<ArrayList<Process>> queues = new ArrayList<ArrayList<Process>>(7);
+   		//Maintaining 7 user queues(0-6) for user processes where queue number 0 has the highest priority
+		ArrayList<ArrayList<Process>> queues = new ArrayList<ArrayList<Process>>(7);
 
-			for (i=0;i<7;i++)
-			{
-				queues.add(new ArrayList<Process>());	
-			}	
+		for (i=0;i<7;i++)
+		{
+			queues.add(new ArrayList<Process>());	
+		}	
 			
-			/*The processes which are sorted according to their burst time have to be added to the queues in the order 
-                          0,6,1,5,2,,4,3,0,6,1..... to obtain a V shaped curve with respect to burst time*/
+		/*The processes which are sorted according to their burst time have to be added to the queues in the order to obtain a 				a V shaped curve with respect to burst time*/
 
-                          /*
-			int count=0,ctr=6,qno=0,f=0;  //Used to generate the sequnce of queue numbers
+		int count=0,qno=0,n,m=0;  //m keeps track of the number of processes in the current queue
+		n=process_list.size();    
 
-			while (process_list.size()!=count)
-				{
-				
-						/*In this case 1 process has been added to all the 7 queues.Re-initialize values
-                                                  to re-generate the same sequene of queue numbers again*/
+		System.out.println("n="+n);
+		//while (process_list.size()!=count)
+	//		{
+				System.out.println("count="+count + "   qno="+qno);	
+                 /*Adding alternate processes while traversing the sorted list from left to right*/
 
-					/*	if(qno==3)
-                                                { 
-							ctr=6;
-							qno=0;
-							f=0;
-						}
- 						
-
-						if(queues.get(qno).size()<MAX_QUEUE_SIZE)
-						{
-							queues.get(qno).add((Process)process_list.get(count));
-							count++ ;
-						}
-
-                                                
-						//Sequence generating logic 
-						if(f==0)
-						  qno=qno+ctr;
-						else 
-   						  qno=qno-ctr;
-
-						ctr=ctr-1;
-                                                if(f==1)
-                                                  f=0;
-                                                else
-                                                  f=1;
-						     
+				for(count=0;count<n;count+=2)
+				{               
+					System.out.println("UP:count = " + count);
+				queues.get(qno).add((Process)process_list.get(count));
+				m++;							
+				if(m>=20)  //current queue is full so move to the next one
+                	{
+                	qno++;
+                	if (qno >= 7 ) {System.out.println("ERROR>"); return;}
+					m=0;
+					}
 					
+				}
+
+				if(n%2!=0)   //Incase the total number of processes is odd
+					n=n-1;
+                                           
+
+                           /*Adding alternate processes while traversing the sorted list from right to left*/
+
+                for(count=n-1;count>=0;count-=2)
+					{
+						System.out.println("DOWN: count:" + count);
+						queues.get(qno).add((Process)process_list.get(count));
+						m++;
+	
+						if(m>=20)
+      						{
+							qno++;
+							if (qno >= 7 ) {System.out.println("ERROR>"); return;}
+							m=0;
+							}
+					}
+
+                                      
+					//Executing the processes in the queue moving from a high priority to low priority queue
 					for (i=0;i<7;i++)
 					{
 						while (queues.get(i).size()!=0)
@@ -142,49 +150,151 @@ class Models
 						}
 					}
 				}
-				*/
-				Collections.sort(process_list,new BurstTimeComparator2());
-				execute_unsorted(process_list,t);
+		//}
 
+
+	public static void  execute_DoubleVModel(ArrayList<Process> process_list, Time t)
+		{
+			int i,j;
+			Collections.sort(process_list,new BurstTimeComparator2());
+			ArrayList<Process> new_process_list = new ArrayList<Process>(process_list.size());
+
+                        //Maintaining 7 user queues(0-6) for user processes where queue number 0 has the highest priority
+			ArrayList<ArrayList<Process>> queues = new ArrayList<ArrayList<Process>>(7);
+
+			for (i=0;i<7;i++)
+			{
+				queues.add(new ArrayList<Process>());	
+			}	
+			
+			/*The processes which are sorted according to their burst time have to be added to the queues in the order to obtain a 				a V shaped curve with respect to burst time*/
+
+			int count=0,qno=0,n,m=0;  //m keeps track of the number of processes in the current queue
+			n=process_list.size();    
+
+			//while (process_list.size()!=count)
+			//	{
+					
+                                        /*Adding alternate processes while traversing the sorted list from left to right*/
+
+					for(count=0;count<n;count+=4)
+					{       
+                                                //Add 2 processes to a queue at a time instead of just one 
+						queues.get(qno).add((Process)process_list.get(count));
+						queues.get(qno).add((Process)process_list.get(count+1));
+						m+=2;							
+						
+						if(m>=20)  //current queue is full so move to the next one
+                                                 {
+                                                       qno++; if (qno >= 7 ) {System.out.println("ERROR>"); return;}
+							m=0;
+						}
+					}
+
+					if(n%2!=0)   //Incase the total number of processes is odd
+					   n=n-1;
+                                         else
+                                           n=n-3;  
+
+                                        /*Adding alternate processes while traversing the sorted list from right to left*/
+
+                             		for(count=n;count>=0;count-=4)
+					{
+						queues.get(qno).add((Process)process_list.get(count));
+						m++;
+	
+						if(m>=20)
+                                                  {
+							qno++; if (qno >= 7 ) {System.out.println("ERROR>"); return;}
+							m=0;
+						}
+				
+					}
+
+                                      
+					//Executing the processes in the queue moving from a high priority to low priority queue
+					for (i=0;i<7;i++)
+					{
+						while (queues.get(i).size()!=0)
+						{
+							Process p = queues.get(i).remove(0);
+							p.Execute(t);
+							System.out.println(p.getBurstTime());
+						}
+					}
+				//}
 		}
 
+	public static void  execute_Spiral(ArrayList<Process> process_list, Time t)
+		{
 
+		}
 
 	public static void main(String args[])
 		{
 			Random rand = new Random();
-			Time t = new Time();  //stores time for process sorting according to some rule
-			Time t_clone = new Time();  //stores the time for unsorted processes
-			Time t_clone_2 = new Time();
+
+			
+			Time t_unsorted = new Time();  //stores time for unsorted processes
+			Time t_sjf = new Time();  //stores the time for sjf
+			Time t_VModel = new Time(); //for VModel
+			Time t_DoubleVModel = new Time(); //for double V model
+			Time t_Spiral = new Time(); //for spiral model 
+
+
 			int i;
 
 			
 			//Make the processes.
-			ArrayList<Process> process_list = new ArrayList<Process>(50);
+			ArrayList<Process> process_list = new ArrayList<Process>(100);
 			Process p;
-			for (i=0;i<50;i++)
+			for (i=0;i<100;i++)
 				{
 					p = new Process(0,rand.nextInt(Process.MAXIMUM_BURST_TIME)+1);
 					process_list.add(p);
 				}
 
-			ArrayList<Process> process_list_clone = new ArrayList<Process>();
-			ArrayList<Process> process_list_clone_2 = new ArrayList<Process>();
-			copy_process_list(process_list_clone,process_list);
-			copy_process_list(process_list_clone_2,process_list);
+
+			ArrayList<Process> process_list_sjf = new ArrayList<Process>();
+			ArrayList<Process> process_list_VModel = new ArrayList<Process>();
+			ArrayList<Process> process_list_DoubleVModel = new ArrayList<Process>();
+			ArrayList<Process> process_list_Spiral = new ArrayList<Process>();
+
+			copy_process_list(process_list_sjf,process_list);
+			copy_process_list(process_list_VModel,process_list);
+			copy_process_list(process_list_DoubleVModel,process_list);
+			copy_process_list(process_list_Spiral,process_list);
 				
 
-			
-			
-			Models.execute_VModel(process_list,t);
+			System.out.println("V Model:");
+			Models.execute_VModel(process_list_VModel,t_VModel);
 			System.out.println("\n\n");
-			Models.execute_unsorted(process_list_clone,t_clone);
 
-			System.out.println("\n\n");
-			Models.execute_SJF(process_list_clone_2,t_clone_2);
-
-			System.out.println(Models.findVariance(process_list,t)+"\n\n\n"+ Models.findVariance(process_list_clone,t_clone)+"\n\n\n"+Models.findVariance(process_list_clone_2,t_clone_2));
 			
+			System.out.println("Unsorted:");
+			Models.execute_unsorted(process_list,t_unsorted);
+			System.out.println("\n\n");
+			
+			
+			System.out.println("SJF:");
+			Models.execute_SJF(process_list_sjf,t_sjf);
+			System.out.println("\n\n");
+
+			
+			System.out.println("Spiral:");
+			Models.execute_Spiral(process_list_Spiral,t_Spiral);
+			System.out.println("\n\n");
+
+			System.out.println("Double V Model:");
+			Models.execute_DoubleVModel(process_list_DoubleVModel,t_DoubleVModel);
+			System.out.println("\n\n");
+
+
+			System.out.println("Variance:\n\nUnsorted:\n"+Models.findVariance(process_list,t_unsorted)+"\n\n\n");
+			System.out.println("Shortest Job Next:\n"+Models.findVariance(process_list_sjf,t_sjf)+"\n\n\n");
+			System.out.println("V Model:\n"+Models.findVariance(process_list_VModel,t_VModel)+"\n\n\n");
+			System.out.println("Double V Model:\n"+Models.findVariance(process_list_DoubleVModel,t_DoubleVModel)+"\n\n\n");
+			System.out.println("Spiral Model:\n"+Models.findVariance(process_list_Spiral,t_Spiral)+"\n\n\n");
 		}
 
 }

@@ -28,6 +28,7 @@ class MinimizeTime
 			return mean;
 		}
 
+
 	public static void  execute_processes(ArrayList<Process> process_list, Time t)
 		{
 			int i,j;
