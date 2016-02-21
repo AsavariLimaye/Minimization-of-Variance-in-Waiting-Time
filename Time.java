@@ -25,3 +25,12 @@ class BurstTimeComparator implements Comparator<Process>
 			}
 	}
 
+class BurstTimeComparator2 implements Comparator<Process>
+	{
+		@Override
+		public int compare(Process a, Process b)
+			{
+				return ( a.getBurstTime() < b.getBurstTime()?1:-1);
+			}
+	}
+
