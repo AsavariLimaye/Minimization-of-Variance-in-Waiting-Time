@@ -1,4 +1,6 @@
 import java.util.*;
+import java.lang.*;
+
 class MinimizeTime
 {
 	public static final int MAX_QUEUE_SIZE=20;
@@ -12,20 +14,30 @@ class MinimizeTime
 				to.add(new Process(from.get(i)));
 			}
 
-	public static double findVariance(ArrayList<Process> process_list,Time t)
-		{//CONVERT: USING ITERATOR!!!
+
+		
+		public static double findVariance(ArrayList<Process> process_list,Time t)
+		{
 			int i;
-			double mean=0;
+			double mean=0,std_dev=0,var=0,d=0;
 			for (i=0;i<process_list.size();i++)
 				{
 					mean+=process_list.get(i).getWaitingTime(t);
 				}
+
 			mean/=process_list.size();
+                        
 			for (i=0;i<process_list.size();i++)
-				{
-					
-				}
-			return mean;
+			{
+					d=mean-process_list.get(i).getWaitingTime(t);
+                                        System.out.println("d="+d+" and i = "+i+" WT= "+process_list.get(i).getWaitingTime(t));
+                                        d=Math.pow(d,2);
+                 
+					std_dev+=d;
+			}
+			std_dev=std_dev/process_list.size();
+                        var=Math.sqrt(std_dev);
+			return var;
 		}
 
 	public static void  execute_processes(ArrayList<Process> process_list, Time t)
