@@ -25,3 +25,7 @@ To compile and run:
 
 javac MinimizeTime.java Process.java Models.java Time.java
 java Models
+
+Or, use the commands
+1. make : To clean, compile and run
+2. make clean : To clean
