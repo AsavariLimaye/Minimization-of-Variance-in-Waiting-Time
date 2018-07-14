@@ -246,7 +246,7 @@ class Models
 
 	public static void  execute_Spiral(ArrayList<Process> process_list, Time t)
 		{
-
+			System.out.println("\nTo be Implemented");
 		}
 
 	public static void main(String args[])
@@ -285,26 +285,26 @@ class Models
 			copy_process_list(process_list_Spiral,process_list);
 				
 
-			System.out.println("V Model:");
+			System.out.println("V Model..");
 			Models.execute_VModel(process_list_VModel,t_VModel);
 			System.out.println("\n\n");
 
 			
-			System.out.println("Unsorted:");
+			System.out.println("Unsorted..");
 			Models.execute_unsorted(process_list,t_unsorted);
 			System.out.println("\n\n");
 			
 			
-			System.out.println("SJF:");
+			System.out.println("SJF..");
 			Models.execute_SJF(process_list_sjf,t_sjf);
 			System.out.println("\n\n");
 
 			
-			System.out.println("Spiral:");
+			System.out.println("Spiral..");
 			Models.execute_Spiral(process_list_Spiral,t_Spiral);
 			System.out.println("\n\n");
 
-			System.out.println("Double V Model:");
+			System.out.println("Double V Model..");
 			Models.execute_DoubleVModel(process_list_DoubleVModel,t_DoubleVModel);
 			System.out.println("\n\n");
 
