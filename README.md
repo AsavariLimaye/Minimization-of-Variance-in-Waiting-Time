@@ -1,4 +1,4 @@
-#Minimization of Variance of Waiting Time of Processes
+# Minimization of Variance of Waiting Time of Processes
 
 Simulation of the different heuristic methods which exist to minimize the variance in waiting time for processes, written in Java.
 
